@@ -1,31 +1,27 @@
 class Solution {
-    public static int uniquePaths(int m, int n) {
-        ArrayList<String> paths = getMazePaths(1,1,m,n);
-        return paths.size();
+    public int uniquePaths(int m, int n) {
+              if(m==0 || n==0) return 0;
+    if(m==1 || n==1) return 1;
+ 
+    int[][] dp = new int[m][n];
+ 
+    //left column
+    for(int i=0; i<m; i++){
+        dp[i][0] = 1;
     }
-    
-    public static ArrayList <String> getMazePaths(int sr, int sc, int dr, int dc){
-        if(sr == dr && sc == dc){
-            ArrayList<String>bres=new ArrayList<>();
-            bres.add("");
-            return bres;
+ 
+    //top row
+    for(int j=0; j<n; j++){
+        dp[0][j] = 1;
+    }
+ 
+    //fill up the dp table
+    for(int i=1; i<m; i++){
+        for(int j=1; j<n; j++){
+            dp[i][j] = dp[i-1][j] + dp[i][j-1];
         }
-        ArrayList <String> hpaths = new ArrayList<>();
-        ArrayList <String> vpaths =  new ArrayList<>();
-        if(sc<dc){
-            hpaths=getMazePaths(sr,sc+1,dr,dc);
-        }
-        if(sr<dr){
-            vpaths=getMazePaths(sr+1,sc,dr,dc);
-        }
-        ArrayList <String> paths = new ArrayList<>();
-            
-        for(String hpath: hpaths){
-            paths.add("h" + hpath);
-        }
-        for(String vpath: vpaths){
-            paths.add("v" + vpath);
-        }
-        return paths;
+    }
+ 
+    return dp[m-1][n-1];
     }
 }
